@@ -43,18 +43,42 @@ fn read_ssid(iface: &str) -> String{
         Err(_) => return String::from("Нет сети :(")
         }
 }
+fn find_wifi() -> Option<String> {
+    let dirs = std::fs::read_dir("/sys/class/net/").ok()?;
+    for entry in dirs {
+        let entry = match entry {
+            Ok(e) => e,
+            Err(_) => continue,
+        };
+        if entry.path().join("wireless").exists() {
+            return entry.file_name().into_string().ok();
+        }
+    }
+    None
+}
+    
+
+
 pub fn run(){
-    let (mut prev_rx, mut prev_tx) = read_net("wlp5s0").unwrap();
+    
+   let name = match find_wifi() {
+        Some(n) => n,
+        None => {
+            println!("{{\"text\": \"\"}}");
+            return;
+        }
+    };
+    let (mut prev_rx, mut prev_tx) = read_net(&name).unwrap();
     loop {
         std::thread::sleep(std::time::Duration::from_secs(2));
         // сеть
-        let (rx, tx) = read_net("wlp5s0").unwrap();
+        let (rx, tx) = read_net(&name).unwrap();
         let download_kb = rx.saturating_sub(prev_rx) as f64 / 2.0 / 1024.0;
         let upload_kb = tx.saturating_sub(prev_tx) as f64 / 2.0 / 1024.0;
 
         prev_rx = rx;
         prev_tx = tx;
-        let net_name = read_ssid("wlp5s0");
+        let net_name = read_ssid(&name);
 
         let result = format!(
             "{{\"text\": \"{0} ↓ {1:.1} ↑ {2:.1} KB/s\", \"tooltip\": \"Сеть: {0}\\nЗагрузка: {1:.1} KB/s\\nОтдача: {2:.1} KB/s\"}}",

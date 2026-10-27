@@ -81,7 +81,7 @@ pub fn run(){
         let net_name = read_ssid(&name);
 
         let result = format!(
-            "{{\"text\": \"{0} ↓ {1:.1} ↑ {2:.1} KB/s\", \"tooltip\": \"Сеть: {0}\\nЗагрузка: {1:.1} KB/s\\nОтдача: {2:.1} KB/s\"}}",
+            "{{\"text\": \"wired>>{0:.6} ↓ {1:.1} ↑ {2:.1} \", \"tooltip\": \"Сеть: {0}\\nЗагрузка: {1:.1} KB/s\\nОтдача: {2:.1} KB/s\"}}",
             net_name, download_kb, upload_kb
         );
         println!("{}", result);

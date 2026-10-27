@@ -79,7 +79,7 @@ pub fn run(){
         prev_total = total;
         prev_idle = idle;
         let result = format!(
-            "{{\"text\": \"CPU {2:.0}% · RAM {0:.1}/{1:.1}\", \"tooltip\": \"Процессор: {2:.0}%\\nПамять: занято {0:.1} GB из {1:.1} GB\"}}",
+            "{{\"text\": \"cpu>>·{2:.0}% · memry>>·{0:.1}/{1:.1} gB\", \"tooltip\": \"Процессор: {2:.0}%\\nПамять: занято {0:.1} GB из {1:.1} GB\"}}",
             occupied_memory, total_memory, percentage_cpu
         );
         println!("{}", result);

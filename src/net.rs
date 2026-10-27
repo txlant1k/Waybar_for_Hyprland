@@ -35,12 +35,12 @@ pub fn read_ssid(iface: &str) -> String{
         Ok(result) => { 
         let name = String::from_utf8_lossy(&result.stdout).trim().to_string();
             if name.is_empty() {
-                String::from("Нет сети :(")
+                String::from("nothing")
             } else {
                 name
             }
         }
-        Err(_) => return String::from("Нет сети :(")
+        Err(_) => return String::from("nothing")
         }
 }
 pub fn find_wifi() -> Option<String> {

@@ -7,6 +7,7 @@
 mod sys;
 mod net;
 mod bat;
+mod player;
 fn run_sys_or_net(){
 loop{
     let (mut prev_total, mut prev_idle) = sys::read_cpu().unwrap();
@@ -54,7 +55,7 @@ loop{
         let net_name = net::read_ssid(&name);
 
         let result = format!(
-            "{{\"text\": \"wired>>{0:.6} ↓ {1:.1} ↑ {2:.1} kB/s\", \"tooltip\": \"Сеть: {0}\\nЗагрузка: {1:.1} KB/s\\nОтдача: {2:.1} KB/s\"}}",
+            "{{\"text\": \"wired>> {0:.7} ↓ {1:.1} ↑ {2:.1} kB/s\", \"tooltip\": \"Сеть: {0}\\nЗагрузка: {1:.1} KB/s\\nОтдача: {2:.1} KB/s\"}}",
             net_name, download_kb, upload_kb
         );
         println!("{}", result);
@@ -68,6 +69,7 @@ fn main() {
     match mode.as_deref(){
         Some("sys_net") => run_sys_or_net(),
         Some("bat") => bat::run(),
+        Some("player") => player::run(),
         _=>run_sys_or_net()
     }
 }

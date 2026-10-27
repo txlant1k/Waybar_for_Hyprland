@@ -8,7 +8,7 @@ use std::io::{BufRead, BufReader};
 /// # Errors 
 /// 
 /// Возвращает ошибку, если вышеупомянутый файл не удалось открыть или прочитать
-fn read_net(iface: &str) -> std::io::Result<(u64, u64)> {
+pub fn read_net(iface: &str) -> std::io::Result<(u64, u64)> {
     let file = File::open("/proc/net/dev")?;
     let reader = BufReader::new(file);
     let mut net_stats: Vec<u64> = Vec::new();
@@ -27,7 +27,7 @@ fn read_net(iface: &str) -> std::io::Result<(u64, u64)> {
     let sent = net_stats[8];
     Ok((got, sent))
 }
-fn read_ssid(iface: &str) -> String{
+pub fn read_ssid(iface: &str) -> String{
     let output = std::process::Command::new("nmcli")
     .args(["-t", "-g", "GENERAL.CONNECTION", "device", "show", iface])
     .output();
@@ -43,7 +43,7 @@ fn read_ssid(iface: &str) -> String{
         Err(_) => return String::from("Нет сети :(")
         }
 }
-fn find_wifi() -> Option<String> {
+pub fn find_wifi() -> Option<String> {
     let dirs = std::fs::read_dir("/sys/class/net/").ok()?;
     for entry in dirs {
         let entry = match entry {
@@ -59,31 +59,3 @@ fn find_wifi() -> Option<String> {
     
 
 
-pub fn run(){
-    
-   let name = match find_wifi() {
-        Some(n) => n,
-        None => {
-            println!("{{\"text\": \"\"}}");
-            return;
-        }
-    };
-    let (mut prev_rx, mut prev_tx) = read_net(&name).unwrap();
-    loop {
-        std::thread::sleep(std::time::Duration::from_secs(2));
-        // сеть
-        let (rx, tx) = read_net(&name).unwrap();
-        let download_kb = rx.saturating_sub(prev_rx) as f64 / 2.0 / 1024.0;
-        let upload_kb = tx.saturating_sub(prev_tx) as f64 / 2.0 / 1024.0;
-
-        prev_rx = rx;
-        prev_tx = tx;
-        let net_name = read_ssid(&name);
-
-        let result = format!(
-            "{{\"text\": \"wired>>{0:.6} ↓ {1:.1} ↑ {2:.1} \", \"tooltip\": \"Сеть: {0}\\nЗагрузка: {1:.1} KB/s\\nОтдача: {2:.1} KB/s\"}}",
-            net_name, download_kb, upload_kb
-        );
-        println!("{}", result);
-    }
-}

@@ -9,7 +9,7 @@ use std::io::{BufRead, BufReader};
 /// # Errors
 ///
 /// Возвращает ошибку, если файл `/proc/stat` не удалось открыть или прочитать
-fn read_cpu() -> std::io::Result<(u64, u64)> {
+pub fn read_cpu() -> std::io::Result<(u64, u64)> {
     let file = File::open("/proc/stat")?;
     let reader = BufReader::new(file);
     let proc_stat: Vec<u64>; // вектор для хранения счетчиков процессора
@@ -29,7 +29,7 @@ fn read_cpu() -> std::io::Result<(u64, u64)> {
 /// # Errors
 ///
 /// Возвращает ошибку, если файл не удалось открыть или прочитать.
-fn read_memory() -> std::io::Result<(f64, f64)> {
+pub fn read_memory() -> std::io::Result<(f64, f64)> {
     let target_word1 = "MemTotal";
     let mut memory_total: u64 = 0;
     let target_word2 = "MemAvailable";
@@ -58,30 +58,4 @@ fn read_memory() -> std::io::Result<(f64, f64)> {
     let memory_total_f64 = memory_total as f64 / (1024.0 * 1024.0);
     // возвращаем пару значений (используется, всего)
     Ok((occupied_memory, memory_total_f64))
-}
-pub fn run(){
-    let (mut prev_total, mut prev_idle) = read_cpu().unwrap();
-    loop {
-        std::thread::sleep(std::time::Duration::from_secs(2));
-        // процессор и память
-        let (occupied_memory, total_memory) = read_memory().unwrap();
-        let (total, idle) = read_cpu().unwrap();
-
-        let d_total = total - prev_total;
-        let d_idle = idle - prev_idle;
-
-        let percentage_cpu = if d_total > 0 {
-            (d_total - d_idle) as f64 / d_total as f64 * 100.0
-        } else {
-            0.0
-        };
-
-        prev_total = total;
-        prev_idle = idle;
-        let result = format!(
-            "{{\"text\": \"cpu>>·{2:.0}% · memry>>·{0:.1}/{1:.1} gB\", \"tooltip\": \"Процессор: {2:.0}%\\nПамять: занято {0:.1} GB из {1:.1} GB\"}}",
-            occupied_memory, total_memory, percentage_cpu
-        );
-        println!("{}", result);
-    }
 }

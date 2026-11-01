@@ -57,7 +57,20 @@ fn read_music() -> std::io::Result<String> {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::strip_brackets;
 
+    #[test]
+    fn removes_brackets() {
+        assert_eq!(strip_brackets("Artist - Song (feat. X)"), "Artist - Song");
+        assert_eq!(strip_brackets("Artist - Song (feat. X) [Live]"), "Artist - Song");
+        assert_eq!(strip_brackets("Artist - Song (Remix (Extended))"), "Artist - Song");
+        assert_eq!(strip_brackets("Artist - Song (Live) Pt. 2"), "Artist - Song Pt. 2");
+        assert_eq!(strip_brackets("Artist - Song) oops"), "Artist - Song oops");
+        assert_eq!(strip_brackets("Artist - Song"), "Artist - Song");
+    }
+}
 
 pub fn run() {
     loop {

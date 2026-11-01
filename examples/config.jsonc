@@ -1,0 +1,52 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 34,
+    "margin-top": 6,
+    "margin-left": 10,
+    "margin-right": 10,
+    "spacing": 0,
+
+    "modules-left": ["hyprland/workspaces", "custom/net", "custom/player"],
+    "modules-center": ["clock"],
+    "modules-right": ["custom/wired", "pulseaudio", "hyprland/language", "custom/bat"],
+
+    "hyprland/workspaces": {
+        "format": "layer:0{name}"
+    },
+
+    "clock": {
+        "format": "{:%H:%M}",
+        "format-alt": "{:%A, %d %B}",
+        "tooltip-format": "PRESENT DAY/PRESENT TIME"
+    },
+
+    "hyprland/language": {
+        "format": "{}",
+        "format-en": "EN",
+        "format-ru": "RU"
+    },
+
+    "custom/wired": {
+        "exec": "~/.local/bin/wired sys",
+        "return-type": "json"
+    },
+
+    "custom/player":{
+        "exec":"~/.local/bin/wired player",
+        "return-type": "json",
+        "escape": true
+    },
+    
+    "custom/bat": {
+        "exec": "~/.local/bin/wired bat",
+        "return-type": "json"
+    },
+
+    "pulseaudio": {
+        "format": "VOL {volume}%",
+        "format-muted": "Muted",
+        "on-click": "pavucontrol"
+    }
+
+}

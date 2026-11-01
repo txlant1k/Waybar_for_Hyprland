@@ -1,0 +1,119 @@
+/* ── база ─────────────────────────────────────────── */
+
+* {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: rgba(5, 7, 13, 0.85);
+    border: 1px solid #2a2f6b;
+    border-radius: 12px;
+}
+
+/* ── общий стиль текста: мягкое свечение ───────────── */
+
+window#waybar,
+#workspaces,
+#clock,
+#pulseaudio,
+#tray,
+#language,
+#custom-bat 
+#custom-player{
+    color: #e8edf2;
+    text-shadow: 0 0 4px rgba(127, 168, 201, 0.55);
+}
+
+/* ── плашки модулей ───────────────────────────────── */
+#custom-player,
+#pulseaudio,
+#language,
+#custom-wired,
+#custom-bat {
+    padding: 3px 10px 3px 8px;
+    margin: 6px 6px;
+    background-color: rgba(14, 26, 51, 0.45);
+    border: 1px solid rgba(42, 47, 107, 0.9);
+    border-left: 2px solid #7fa8c9;
+    border-radius: 6px;
+    box-shadow: inset 0 0 8px rgba(127, 168, 201, 0.10);
+    transition: all 0.3s ease;
+}
+
+#pulseaudio:hover,
+#language:hover,
+#custom-wired:hover,
+#custom-net:hover,
+#custom-bat:hover 
+#custom-player:hover{
+    background-color: rgba(42, 47, 107, 0.45);
+    border-color: #7fa8c9;
+    box-shadow: inset 0 0 10px rgba(127, 168, 201, 0.25);
+    text-shadow: 0 0 7px rgba(181, 201, 224, 0.9);
+}
+
+
+
+/* ── рабочие столы ────────────────────────────────── */
+
+#workspaces {
+    margin: 5px 8px;
+}
+
+#workspaces button {
+    color: #7fa8c9;
+    padding: 0 8px;
+    margin: 1px 2px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background-color: transparent;
+    text-shadow: 0 0 3px rgba(127, 168, 201, 0.4);
+    transition: all 0.25s ease;
+    min-width: 12px;
+}
+
+#workspaces button.active {
+    color: #e8edf2;
+    background-color: rgba(42, 47, 107, 0.75);
+    border-color: #7fa8c9;
+    padding: 0 14px;
+    box-shadow: inset 0 0 8px rgba(127, 168, 201, 0.30);
+    text-shadow: 0 0 6px rgba(181, 201, 224, 0.9);
+}
+
+#workspaces button:hover {
+    background-color: rgba(127, 168, 201, 0.18);
+    border-color: rgba(127, 168, 201, 0.5);
+}
+
+/* ── часы: без плашки, но с самым сильным свечением ── */
+
+#clock {
+    font-weight: 600;
+    padding: 4px 16px;
+    margin: 5px 0;
+    color: #e8edf2;
+    text-shadow: 0 0 8px rgba(127, 168, 201, 0.85);
+}
+
+/* ── прочее ───────────────────────────────────────── */
+#language {
+    font-weight: 600;
+    color: #7fa8c9;
+}
+
+/* ── подсказки ────────────────────────────────────── */
+
+tooltip {
+    background-color: rgba(5, 7, 13, 0.95);
+    border: 1px solid #7fa8c9;
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(127, 168, 201, 0.35);
+}
+
+tooltip label {
+    color: #e8edf2;
+    text-shadow: 0 0 4px rgba(127, 168, 201, 0.5);
+}
